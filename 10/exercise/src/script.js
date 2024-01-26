@@ -1,16 +1,5 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import gsap from 'gsap'
-import GUI from 'lil-gui'
-
-
-const gui = new GUI({
-    width: 340,
-    title: 'GUI'
-
-})
-const debugObject = {}
-
 
 /**
  * Base
@@ -23,54 +12,11 @@ const scene = new THREE.Scene()
 
 /**
  * Object
-*/
-
-debugObject.color = '#ff0000'
-
-const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ color: debugObject.color, wireframe: true })
+ */
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
-
-const cubeTweaks = gui.addFolder('Cube')
-cubeTweaks.close()
-
-cubeTweaks.add(mesh.position, 'y')
-    .min(-3)
-    .max(3)
-    .step(0.01)
-;
- 
-cubeTweaks.add(mesh.material, 'wireframe')
-
-cubeTweaks.addColor(debugObject, 'color')
-    .onChange(() => {
-        mesh.material.color.set(debugObject.color)
-    })
-;
-
-debugObject.spin = () => {
-    gsap.to(mesh.rotation, {y: mesh.rotation.y + Math.PI})
-}
-
-cubeTweaks.add(debugObject, 'spin')
-
-debugObject.subdivision = 2
-
-cubeTweaks.add(debugObject, 'subdivision')
-    .min(2)
-    .max(10)
-    .step(1)
-    .onFinishChange(() => {
-        mesh.geometry.dispose()
-        mesh.geometry = new THREE.BoxGeometry(
-            1, 1, 1,
-            debugObject.subdivision, debugObject.subdivision, debugObject.subdivision
-        )
-    })
-;
-
-
 
 /**
  * Sizes
@@ -102,7 +48,7 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
-camera.position.z = 2
+camera.position.z = 1
 scene.add(camera)
 
 // Controls
